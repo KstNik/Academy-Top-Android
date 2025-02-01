@@ -1,0 +1,348 @@
+ВНИМАНИЕ! В проектах применяется технология Jetpack Compose
+
+
+				I. RECTANGLES
+
+
+				1. Создание приложения
+
+
+1.1. Запустить Android Studio
+
+1.2. Выбрать "New Project …"
+
+1.3. Вкладка "Phone and Tablet" -> выбрать "Empty Activity" -> кнопка "Next"
+
+1.4. Вкладка "New Project …"
+	a) изменить имя проекта: Rectangles
+	b) установить
+		Minimum SDK: API 24 ("Nougat"; Android 7.0)
+		Build configuration language: Kotlin DSL (build grade.kts) [Recommended]
+	c) кнопка "Finish"
+
+
+				2. Изменения в проекте
+
+
+2.1 /app/src/main/java/com/example/rectangles/MainActivity.kt – изменить код:
+
+package com.example.rectangles
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import com.example.rectangles.ui.theme.RectanglesTheme
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            RectanglesTheme {
+                RectanglesApp()
+            }
+        }
+    }
+}
+
+@Composable
+fun RectanglesApp() {
+    // Основные цвета
+    val blueBorderColor = Color(0xFF0000FF) // Синий цвет
+    val whiteBorderColor = Color.White // Белый цвет
+    val topRectangleColor = Color(0xFF596163) // Верхние прямоугольники (89, 97, 99)
+    val bottomRectangleColor = Color(0xFF5A5A52) // Нижние прямоугольники (90, 90, 82)
+
+    // Толщина рамок
+    val blueBorderWidth = 10.dp // Толщина синей рамки
+    val whiteBorderWidth = blueBorderWidth / 5 // Толщина белой рамки
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .border(blueBorderWidth, blueBorderColor) // Синяя рамка
+            .padding(blueBorderWidth) // Отступ для белой рамки
+            .border(whiteBorderWidth, whiteBorderColor) // Белая рамка
+            .padding(whiteBorderWidth) // Отступ для внутренних линий
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            // Верхняя часть экрана (4 прямоугольника)
+            Row(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+            ) {
+                // Верхний левый прямоугольник (разделен горизонтально)
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+                        .background(topRectangleColor)
+                        .border(whiteBorderWidth, whiteBorderColor)
+                        .padding(whiteBorderWidth) // Отступ для внутренних линий
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxSize()
+                            .background(topRectangleColor)
+                            .border(whiteBorderWidth, whiteBorderColor)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxSize()
+                            .background(topRectangleColor)
+                            .border(whiteBorderWidth, whiteBorderColor)
+                    )
+                }
+
+                // Верхний правый прямоугольник (разделен вертикально)
+                Row(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+                        .background(topRectangleColor)
+                        .border(whiteBorderWidth, whiteBorderColor)
+                        .padding(whiteBorderWidth) // Отступ для внутренних линий
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxSize()
+                            .background(topRectangleColor)
+                            .border(whiteBorderWidth, whiteBorderColor)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxSize()
+                            .background(topRectangleColor)
+                            .border(whiteBorderWidth, whiteBorderColor)
+                    )
+                }
+            }
+
+            // Нижняя часть экрана (4 прямоугольника)
+            Row(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+            ) {
+                // Нижний левый прямоугольник (разделен вертикально)
+                Row(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+                        .background(bottomRectangleColor)
+                        .border(whiteBorderWidth, whiteBorderColor)
+                        .padding(whiteBorderWidth) // Отступ для внутренних линий
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxSize()
+                            .background(bottomRectangleColor)
+                            .border(whiteBorderWidth, whiteBorderColor)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxSize()
+                            .background(bottomRectangleColor)
+                            .border(whiteBorderWidth, whiteBorderColor)
+                    )
+                }
+
+                // Нижний правый прямоугольник (разделен горизонтально)
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+                        .background(bottomRectangleColor)
+                        .border(whiteBorderWidth, whiteBorderColor)
+                        .padding(whiteBorderWidth) // Отступ для внутренних линий
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxSize()
+                            .background(bottomRectangleColor)
+                            .border(whiteBorderWidth, whiteBorderColor)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxSize()
+                            .background(bottomRectangleColor)
+                            .border(whiteBorderWidth, whiteBorderColor)
+                    )
+                }
+            }
+        }
+    }
+}
+
+
+				II. CALCULATOR
+
+
+				1. Создание приложения
+
+
+1.1. Запустить Android Studio
+
+1.2. Выбрать "New Project …"
+
+1.3. Вкладка "Phone and Tablet" -> выбрать "Empty Activity" -> кнопка "Next"
+
+1.4. Вкладка "New Project …"
+	a) изменить имя проекта: Calculator
+	b) установить
+		Minimum SDK: API 24 ("Nougat"; Android 7.0)
+		Build configuration language: Kotlin DSL (build grade.kts) [Recommended]
+	c) кнопка "Finish"
+
+
+				2. Изменения в проекте
+
+
+2.1 /app/src/main/java/com/example/calculator/MainActivity.kt – изменить код:
+
+package com.example.calculator
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.calculator.ui.theme.CalculatorTheme
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            CalculatorTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    CalculatorApp()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun CalculatorApp() {
+    var currentInput by remember { mutableStateOf("0") }
+    var firstOperand by remember { mutableStateOf(0.0) }
+    var currentOperator by remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Bottom
+    ) {
+        // Поле для отображения результата
+        Text(
+            text = currentInput,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            fontSize = 48.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = androidx.compose.ui.text.style.TextAlign.End
+        )
+
+        // Кнопки калькулятора
+        val buttons = listOf(
+            "7", "8", "9", "/",
+            "4", "5", "6", "*",
+            "1", "2", "3", "-",
+            "C", "0", "=", "+"
+        )
+
+        // Сетка кнопок
+        Grid(buttons, 4) { buttonText ->
+            Button(
+                onClick = {
+                    when (buttonText) {
+                        in "0123456789" -> {
+                            if (currentInput == "0") currentInput = buttonText
+                            else currentInput += buttonText
+                        }
+                        "+", "-", "*", "/" -> {
+                            firstOperand = currentInput.toDouble()
+                            currentOperator = buttonText
+                            currentInput = "0"
+                        }
+                        "=" -> {
+                            val secondOperand = currentInput.toDouble()
+                            currentInput = when (currentOperator) {
+                                "+" -> (firstOperand + secondOperand).toString()
+                                "-" -> (firstOperand - secondOperand).toString()
+                                "*" -> (firstOperand * secondOperand).toString()
+                                "/" -> (firstOperand / secondOperand).toString()
+                                else -> "0"
+                            }
+                        }
+                        "C" -> {
+                            currentInput = "0"
+                            firstOperand = 0.0
+                            currentOperator = ""
+                        }
+                    }
+                },
+                modifier = Modifier
+                    .padding(4.dp)
+                    .weight(1f)
+            ) {
+                Text(text = buttonText, fontSize = 24.sp)
+            }
+        }
+    }
+}
+
+@Composable
+fun Grid(
+    items: List<String>,
+    columns: Int,
+    content: @Composable (String) -> Unit
+) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        for (i in items.indices step columns) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                for (j in 0 until columns) {
+                    if (i + j < items.size) {
+                        Box(
+                            modifier = Modifier.weight(1f),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            content(items[i + j])
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
