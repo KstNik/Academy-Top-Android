@@ -1,0 +1,195 @@
+ВНИМАНИЕ! В проекте применяется технология Jetpack Compose
+
+
+				1. Создание приложения
+
+
+1.1. Запустить Android Studio
+
+1.2. Выбрать "New Project …"
+
+1.3. Вкладка "Phone and Tablet" -> выбрать "Empty Activity" -> кнопка "Next"
+
+1.4. Вкладка "New Project …"
+	a) изменить имя проекта: CurrencyConverter
+	b) установить
+		Minimum SDK: API 24 ("Nougat"; Android 7.0)
+		Build configuration language: Kotlin DSL (build grade.kts) [Recommended]
+	c) кнопка "Finish"
+
+
+				2. Изменения в проекте
+
+
+2.1. /app/src/main/res/values/strings.xml – изменить код:
+
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Currency Converter</string>
+    <string name="amount">Amount</string>
+    <string name="converted_amount">Converted Amount</string>
+    <string name="from_currency">From currency:</string>
+    <string name="to_currency">To currency:</string>
+</resources>
+
+
+2.2. /app/src/main/res/values-ru/strings.xml – создать, добавить код:
+
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Конвертер валют</string>
+    <string name="amount">Сумма</string>
+    <string name="converted_amount">Конвертированная сумма</string>
+    <string name="from_currency">Из валюты:</string>
+    <string name="to_currency">В валюту:</string>
+</resources>
+
+
+2.3. /app/src/main/java/com/example/currencyconverter/MainActivity.kt – изменить код:
+
+package com.example.currencyconverter
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            CurrencyConverterApp()
+        }
+    }
+}
+
+@Composable
+fun CurrencyConverterApp() {
+    var amount by remember { mutableStateOf("") }
+    var convertedAmount by remember { mutableStateOf("") }
+    var fromCurrency by remember { mutableStateOf("RU") }
+    var toCurrency by remember { mutableStateOf("USD") }
+
+    val currencies = listOf("RU", "USD", "EUR")
+
+    val exchangeRates = mapOf(
+        "RU" to mapOf("USD" to 0.0102, "EUR" to 0.0098),
+        "USD" to mapOf("RU" to 98.0126, "EUR" to 0.9571),
+        "EUR" to mapOf("RU" to 102.4041, "USD" to 1.0448)
+    )
+
+    fun convertCurrency() {
+        val amountValue = amount.toDoubleOrNull() ?: 0.0
+        val rate = exchangeRates[fromCurrency]?.get(toCurrency) ?: 1.0
+        convertedAmount = (amountValue * rate).toString()
+    }
+
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TextField(
+            value = amount,
+            onValueChange = {
+                amount = it
+                convertCurrency()
+            },
+            label = { Text(stringResource(id = R.string.amount)) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(stringResource(id = R.string.from_currency), fontSize = 18.sp)
+        currencies.forEach { currency ->
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .selectable(
+                        selected = (currency == fromCurrency),
+                        onClick = {
+                            fromCurrency = currency
+                            convertCurrency()
+                        }
+                    )
+                    .padding(8.dp)
+            ) {
+                RadioButton(
+                    selected = (currency == fromCurrency),
+                    onClick = {
+                        fromCurrency = currency
+                        convertCurrency()
+                    }
+                )
+                Text(text = currency, modifier = Modifier.padding(start = 8.dp))
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(stringResource(id = R.string.to_currency), fontSize = 18.sp)
+        currencies.forEach { currency ->
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .selectable(
+                        selected = (currency == toCurrency),
+                        onClick = {
+                            toCurrency = currency
+                            convertCurrency()
+                        }
+                    )
+                    .padding(8.dp)
+            ) {
+                RadioButton(
+                    selected = (currency == toCurrency),
+                    onClick = {
+                        toCurrency = currency
+                        convertCurrency()
+                    }
+                )
+                Text(text = currency, modifier = Modifier.padding(start = 8.dp))
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextField(
+            value = convertedAmount,
+            onValueChange = {},
+            label = { Text(stringResource(id = R.string.converted_amount)) },
+            readOnly = true,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+
+				3. Запуск приложения
+
+
+3.1. Язык эмулятора по умолчанию английский, поэтому программа запустится на английском
+
+3.2. Для перехода на русский:
+
+	3.2.1. Свернуть приложение – нажать кнопку со знаком «O» («Home») расположенную над эмулятором (НЕ НА САМОМ СМАРТФОНЕ!)
+
+	3.2.2. Отобразить все приложения – навести указатель мыши над строкой поиска «Google», нажать правую кнопку и повести вверх
+
+	3.2.3. Сменить язык – двойной щелчок по иконке «Settings» -> пункт меню «Languages & input» -> нажать «Languages» -> нажать «Add a language» -> выбрать «Русский» -> переместить русский язык в приоритет, т.е. перетащить его вверх и поставить в списке выше английского на 1-ое место -> нажать в появившемся диалоговом окне «Change»
+
+	3.2.4. Развернуть приложение – язык изменится на русский
